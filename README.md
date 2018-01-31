@@ -1,24 +1,17 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+API endpoints for the product catalog and a simple front-end for the web.
 
-Things you may want to cover:
 
-* Ruby version
+Setup:
 
-* System dependencies
+```bash
+git clone git@github.com:ElminDmitry/product_catalog.git
+cd product_catalog
+gem install bundler
+bundle
+rails db:create
+rails db:migrate
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+rails s
+```
