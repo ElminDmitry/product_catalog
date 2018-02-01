@@ -5,14 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-10.times do
+5.times do
   Product.create(
     name: 'Dirt',
-    sold_out: false,
+    sold_out: true,
     category: 'History',
     under_sale: true,
     price: rand(2000),
-    sale_price: rand(1000...2000),
-    sale_text: 'Good choice'
+    sale_price: rand(1000...2000)
   )
 end

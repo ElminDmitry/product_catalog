@@ -16,13 +16,13 @@ ActiveRecord::Schema.define(version: 20180130130155) do
   enable_extension "plpgsql"
 
   create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.boolean "sold_out"
+    t.string "name", default: ""
+    t.boolean "sold_out", default: false
     t.string "category"
-    t.boolean "under_sale"
-    t.integer "price"
-    t.integer "sale_price"
-    t.string "sale_text"
+    t.boolean "under_sale", default: false
+    t.integer "price", default: 0
+    t.integer "sale_price", default: 0
+    t.string "sale_text", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
