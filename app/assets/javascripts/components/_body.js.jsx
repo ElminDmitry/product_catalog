@@ -1,16 +1,39 @@
 class Body extends React.Component {
     constructor() {
         super();
-        this.state = { products: [] };
+        this.state = {
+            products: [],
+            sort: "name",
+            order: "asc",
+            page: 1,
+            pages: 0
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.removeProductFromState = this.removeProductFromState.bind(this);
         this.updateItems = this.updateItems.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
+        this.getDataFromApi = this.getDataFromApi.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
     }
 
     componentDidMount() {
-        $.getJSON('/api/v1/products.json', (response) => { this.setState({ products: response }) });
+        this.getDataFromApi(this.state.page);
+    }
+
+    getDataFromApi(page) {
+        $.getJSON('/api/v1/products.json', { page: page }, (response) => {
+            this.setState({
+                products: response.products,
+                pages: parseInt(response.pages),
+                page: parseInt(response.page)
+
+            })
+        });
+    }
+
+    handleChangePage(page) {
+        this.getDataFromApi(page);
     }
 
     handleSubmit(product) {
@@ -60,6 +83,9 @@ class Body extends React.Component {
                 <AllProducts products={this.state.products}
                              handleDelete={this.handleDelete}
                              onUpdate={this.handleUpdate}/>
+                <Paginator page={this.state.page}
+                           pages={this.state.pages}
+                           handleChangePage={this.handleChangePage} />
             </div>
         );
     }

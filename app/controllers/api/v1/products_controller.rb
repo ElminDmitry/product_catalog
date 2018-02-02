@@ -1,6 +1,9 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   def index
-    respond_with Product.all
+
+    respond_with products: Product.paginate(page: page).order(sort_by + ' ' + order),
+                 page: page,
+                 pages: Product.pages
   end
 
   def create
@@ -18,6 +21,18 @@ class Api::V1::ProductsController < Api::V1::BaseController
   end
 
   private
+
+  def sort_by
+    %w[name category price sale_price].include?(params[:sort_by]) ? params[:sort_by] : 'name'
+  end
+
+  def order
+    %w(asc desc).include?(params[:order]) ? params[:order] : 'asc'
+  end
+
+  def page
+    params[:page] || 1
+  end
 
   def product_params
     params.require(:product).permit(:id, :name, :sold_out, :category, :under_sale, :price, :sale_price, :sale_text)
