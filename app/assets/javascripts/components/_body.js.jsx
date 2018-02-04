@@ -6,7 +6,8 @@ class Body extends React.Component {
             sort: "name",
             order: "asc",
             page: 1,
-            pages: 0
+            pages: 0,
+            categories: []
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -15,6 +16,8 @@ class Body extends React.Component {
         this.handleUpdate = this.handleUpdate.bind(this);
         this.getDataFromApi = this.getDataFromApi.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+        this.handleSortColumn = this.handleSortColumn.bind(this);
     }
 
     componentDidMount() {
@@ -26,7 +29,8 @@ class Body extends React.Component {
             this.setState({
                 products: response.products,
                 pages: parseInt(response.pages),
-                page: parseInt(response.page)
+                page: parseInt(response.page),
+                categories: response.categories
 
             })
         });
@@ -34,6 +38,17 @@ class Body extends React.Component {
 
     handleChangePage(page) {
         this.getDataFromApi(page);
+        // this.setState({ page: page })
+    }
+
+    handleSearch(response) {
+        this.setState({
+            products: response.products,
+            pages: parseInt(response.pages),
+            page: parseInt(response.page),
+            categories: response.categories
+
+        })
     }
 
     handleSubmit(product) {
@@ -68,6 +83,23 @@ class Body extends React.Component {
         })
     }
 
+    handleSortColumn(name, order) {
+        if (this.state.sort !== name) {
+            order = 'asc';
+        }
+        $.ajax({
+            url: '/api/v1/products',
+            data: { sort_by: name, order: order, page: this.state.page },
+            method: 'GET',
+            success: function(data) {
+                this.setState({ events: data.events, sort: name, order: order });
+            }.bind(this),
+            error: function(xhr, status, error) {
+                alert('Cannot sort events: ', error);
+            }
+        });
+    }
+
     updateItems(newProduct) {
         let products = this.state.products;
         products = products.map((product) => {
@@ -79,13 +111,18 @@ class Body extends React.Component {
     render() {
         return (
             <div>
+                <SearchForm categories={this.state.categories}
+                            handleSearch={this.handleSearch}/>
                 <NewProduct handleSubmit={this.handleSubmit}/>
                 <AllProducts products={this.state.products}
                              handleDelete={this.handleDelete}
-                             onUpdate={this.handleUpdate}/>
+                             onUpdate={this.handleUpdate}
+                             handleSortColumn={this.handleSortColumn}
+                             sort={this.state.sort}
+                             order={this.state.order}/>
                 <Paginator page={this.state.page}
                            pages={this.state.pages}
-                           handleChangePage={this.handleChangePage} />
+                           handleChangePage={this.handleChangePage}/>
             </div>
         );
     }
