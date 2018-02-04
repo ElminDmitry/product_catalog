@@ -8,20 +8,21 @@ class FilterForm extends React.Component {
 
     handleSearch() {
         let filters = {
-            query_cont: this.queryTextInput.value,
-            price_gteq: this.queryMinPriceInput.value,
-            price_lteq: this.queryMaxPriceInput.value,
+            query_cont: this.filterTextInput.value,
+            price_gteq: this.filterMinPriceInput.value,
+            price_lteq: this.filterMaxPriceInput.value,
             category_in: this.state.toggledCategories
         };
         this.props.handleSearch(filters);
     }
 
-    toggleCategory(e) {
+    toggleCategory(event) {
+        debugger
         let updatedList = this.state.toggledCategories;
-        if(e.target.checked){
-            updatedList.push(e.target.value)
+        if(event.target.checked){
+            updatedList.push(event.target.value)
         } else {
-            updatedList = updatedList.filter(e => e !== e.target.value);
+            updatedList = updatedList.filter(e => e !== event.target.value);
         }
         this.state = { toggledCategories: updatedList };
     }
@@ -42,17 +43,17 @@ class FilterForm extends React.Component {
                     type="text"
                     className="form-control"
                     placeholder="Type a search phrase..."
-                    ref={(query) => { this.queryTextInput = query; }} />
+                    ref={(filterText) => { this.filterTextInput = filterText; }} />
                 <input
                     type="number"
                     className="form-control"
                     placeholder="Type a min price value"
-                    ref={(query) => { this.queryMinPriceInput = query; }} />
+                    ref={(filterMinPrice) => { this.filterMinPriceInput = filterMinPrice; }} />
                 <input
                     type="number"
                     className="form-control"
                     placeholder="Type a max price value"
-                    ref={(query) => { this.queryMaxPriceInput = query; }} />
+                    ref={(filterMaxPrice) => { this.filterMaxPriceInput = filterMaxPrice; }} />
                 {checkboxItems}
                 <select options={['f']}></select>
                 <button onClick={this.handleSearch}>Set filters</button>
