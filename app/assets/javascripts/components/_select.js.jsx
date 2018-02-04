@@ -10,8 +10,8 @@ class Select extends React.Component {
         console.log(`Selected: ${selectedOption.label}`);
     }
     render() {
-        const { selectedOption } = this.state;
-        const value = selectedOption && selectedOption.value;
+        let { selectedOption } = this.state;
+        let value = selectedOption && selectedOption.value;
 
         return (
             <Select

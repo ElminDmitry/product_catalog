@@ -1,4 +1,4 @@
-class SearchForm extends React.Component {
+class FilterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = { toggledCategories: [] };
@@ -7,15 +7,13 @@ class SearchForm extends React.Component {
     }
 
     handleSearch() {
-        let q = {
+        let filters = {
             query_cont: this.queryTextInput.value,
             price_gteq: this.queryMinPriceInput.value,
             price_lteq: this.queryMaxPriceInput.value,
             category_in: this.state.toggledCategories
-        }
-        $.getJSON('/api/v1/products/search', { q: q }, (response) => {
-            this.props.handleSearch(response);
-        });
+        };
+        this.props.handleSearch(filters);
     }
 
     toggleCategory(e) {

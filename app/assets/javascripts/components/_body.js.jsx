@@ -7,7 +7,8 @@ class Body extends React.Component {
             order: "asc",
             page: 1,
             pages: 0,
-            categories: []
+            categories: [],
+            filters: {}
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -25,7 +26,7 @@ class Body extends React.Component {
     }
 
     getDataFromApi(page) {
-        $.getJSON('/api/v1/products.json', { page: page }, (response) => {
+        $.getJSON('/api/v1/products.json', { q: this.state.filters, page: page }, (response) => {
             this.setState({
                 products: response.products,
                 pages: parseInt(response.pages),
@@ -38,17 +39,20 @@ class Body extends React.Component {
 
     handleChangePage(page) {
         this.getDataFromApi(page);
-        // this.setState({ page: page })
+        this.setState({ page: page })
     }
 
-    handleSearch(response) {
-        this.setState({
-            products: response.products,
-            pages: parseInt(response.pages),
-            page: parseInt(response.page),
-            categories: response.categories
+    handleSearch(filters) {
+        $.getJSON('/api/v1/products.json', { q: filters, page: 1 }, (response) => {
+            this.setState({
+                products: response.products,
+                pages: parseInt(response.pages),
+                page: parseInt(response.page),
+                categories: response.categories,
+                filters
 
-        })
+            })
+        });
     }
 
     handleSubmit(product) {
@@ -111,7 +115,7 @@ class Body extends React.Component {
     render() {
         return (
             <div>
-                <SearchForm categories={this.state.categories}
+                <FilterForm categories={this.state.categories}
                             handleSearch={this.handleSearch}/>
                 <NewProduct handleSubmit={this.handleSubmit}/>
                 <AllProducts products={this.state.products}

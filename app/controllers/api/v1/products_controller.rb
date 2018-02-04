@@ -1,8 +1,9 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   def index
-    respond_with products: Product.paginate(page: page).order(sort_by + ' ' + order),
+    products = Product.ransack(params[:q]).result.order(sort_by + ' ' + order)
+    respond_with products: products.paginate(page: page),
                  page: page,
-                 pages: Product.pages,
+                 pages: products.pages,
                  categories: Product.categories
   end
 

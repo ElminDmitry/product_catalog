@@ -14,12 +14,12 @@ class Paginator extends React.Component {
     }
 
     render() {
-        const self = this;
-        const page = this.props.page;
-        const last_page = this.props.pages;
-        const page_links = [];
-        const max_elements = 2;
-        const pages = [1];
+        let self = this;
+        let page = this.props.page;
+        let last_page = this.props.pages;
+        let page_links = [];
+        let max_elements = 2;
+        let pages = [1];
 
         for (let i = page - max_elements; i <= page + max_elements; i++) {
             if (!pages.includes(i))
