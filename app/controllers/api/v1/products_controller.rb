@@ -32,7 +32,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
   private
 
   def sort_by
-    %w[name category price sale_price].include?(params[:sort_by]) ? params[:sort_by] : 'name'
+    %w[name price sale_price].include?(params[:sort_by]) ? params[:sort_by] : 'name'
   end
 
   def order

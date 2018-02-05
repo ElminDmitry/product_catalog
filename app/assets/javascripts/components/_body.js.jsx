@@ -26,7 +26,12 @@ class Body extends React.Component {
     }
 
     getDataFromApi(page) {
-        $.getJSON('/api/v1/products.json', { q: this.state.filters, page: page }, (response) => {
+        $.getJSON('/api/v1/products.json', {
+            q: this.state.filters,
+            page: page,
+            sort_by: this.state.sort,
+            order: this.state.order
+        }, (response) => {
             this.setState({
                 products: response.products,
                 pages: parseInt(response.pages),
@@ -42,15 +47,21 @@ class Body extends React.Component {
         this.setState({ page: page })
     }
 
-    handleSearch(filters) {
-        $.getJSON('/api/v1/products.json', { q: filters, page: 1 }, (response) => {
+    handleSearch(filters, sorting) {
+        $.getJSON('/api/v1/products.json', {
+            q: filters,
+            page: 1,
+            sort_by: sorting.sortValue,
+            order: sorting.orderValue
+        }, (response) => {
             this.setState({
                 products: response.products,
                 pages: parseInt(response.pages),
                 page: parseInt(response.page),
                 categories: response.categories,
-                filters
-
+                filters,
+                sort: sorting.sortValue,
+                order: sorting.orderValue
             })
         });
     }
@@ -120,10 +131,7 @@ class Body extends React.Component {
                 <NewProduct handleSubmit={this.handleSubmit}/>
                 <AllProducts products={this.state.products}
                              handleDelete={this.handleDelete}
-                             onUpdate={this.handleUpdate}
-                             handleSortColumn={this.handleSortColumn}
-                             sort={this.state.sort}
-                             order={this.state.order}/>
+                             onUpdate={this.handleUpdate}/>
                 <Paginator page={this.state.page}
                            pages={this.state.pages}
                            handleChangePage={this.handleChangePage}/>

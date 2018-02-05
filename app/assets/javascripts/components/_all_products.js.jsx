@@ -3,15 +3,10 @@ class AllProducts extends React.Component {
         super(props);
         this.handleDelete = this.handleDelete.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
-        this.handleSortColumn = this.handleSortColumn.bind(this);
     }
 
     handleDelete(id) {
         this.props.handleDelete(id);
-    }
-
-    handleSortColumn(name, order) {
-        this.props.handleSortColumn(name, order);
     }
 
     onUpdate(product) {

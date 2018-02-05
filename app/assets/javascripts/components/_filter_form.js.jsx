@@ -1,7 +1,12 @@
 class FilterForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { toggledCategories: [] };
+        this.state = {
+            toggledCategories: [],
+            sortableOptions: ['name', 'price', 'sale_price'],
+            options: [],
+
+        };
         this.handleSearch = this.handleSearch.bind(this);
         this.toggleCategory = this.toggleCategory.bind(this);
     }
@@ -13,18 +18,28 @@ class FilterForm extends React.Component {
             price_lteq: this.filterMaxPriceInput.value,
             category_in: this.state.toggledCategories
         };
-        this.props.handleSearch(filters);
+        let sorting = {
+            sortValue: this.sortSelect.value,
+            orderValue: this.orderSelect.value
+        };
+        this.props.handleSearch(filters, sorting);
+    }
+
+    componentWillMount() {
+        let options = this.state.sortableOptions.map((option, index) =>
+            <option key={index} value={option}>{option}</option>
+        );
+        this.setState({ options })
     }
 
     toggleCategory(event) {
-        debugger
-        let updatedList = this.state.toggledCategories;
+        let updatedList = Array.from(this.state.toggledCategories);
         if(event.target.checked){
             updatedList.push(event.target.value)
         } else {
             updatedList = updatedList.filter(e => e !== event.target.value);
         }
-        this.state = { toggledCategories: updatedList };
+        this.setState({ toggledCategories: updatedList })
     }
 
     render() {
@@ -43,19 +58,29 @@ class FilterForm extends React.Component {
                     type="text"
                     className="form-control"
                     placeholder="Type a search phrase..."
-                    ref={(filterText) => { this.filterTextInput = filterText; }} />
+                    ref={(filterText) => { this.filterTextInput = filterText; }}/>
                 <input
                     type="number"
                     className="form-control"
                     placeholder="Type a min price value"
-                    ref={(filterMinPrice) => { this.filterMinPriceInput = filterMinPrice; }} />
+                    ref={(filterMinPrice) => { this.filterMinPriceInput = filterMinPrice; }}/>
                 <input
                     type="number"
                     className="form-control"
                     placeholder="Type a max price value"
-                    ref={(filterMaxPrice) => { this.filterMaxPriceInput = filterMaxPrice; }} />
+                    ref={(filterMaxPrice) => { this.filterMaxPriceInput = filterMaxPrice; }}/>
                 {checkboxItems}
-                <select options={['f']}></select>
+                <select
+                        onChange={this.handleSort}
+                        ref={(sort) => { this.sortSelect = sort; }}>
+                    {this.state.options}
+                </select>
+                <select
+                        onChange={this.handleOrder}
+                        ref={(order) => { this.orderSelect = order; }}>
+                    <option key={0} value={'asc'}>{'ASC'}</option>
+                    <option key={1} value={'desc'}>{'DESC'}</option>
+                </select>
                 <button onClick={this.handleSearch}>Set filters</button>
             </div>
         );

@@ -1,8 +1,12 @@
 class Product extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { editable: false };
+        this.state = {
+            editable: false,
+            showAttributes: false
+        };
         this.handleEdit = this.handleEdit.bind(this);
+        this.handleNameClick = this.handleNameClick.bind(this);
     }
 
     handleEdit() {
@@ -15,17 +19,30 @@ class Product extends React.Component {
         this.setState({ editable: !this.state.editable })
     }
 
+    handleNameClick() {
+        this.setState({ showAttributes: !this.state.showAttributes })
+    }
+
     render() {
-        let name = this.state.editable ? <input type='text' ref={(name) => { this.nameInput = name; }} defaultValue={this.props.product.name} /> : <h3>{this.props.product.name}</h3>;
+        let name;
+        if(this.state.editable) {
+            name = <input type='text'
+                          ref={(name) => { this.nameInput = name; }}
+                          defaultValue={this.props.product.name}/>
+        } else {
+            name = <h3 onClick={this.handleNameClick}>{this.props.product.name}</h3>;
+        }
         return (
             <div>
                 {name}
-                <p>{this.props.product.sold_out}</p>
-                <p>{this.props.product.category}</p>
-                <p>{this.props.product.under_sale}</p>
-                <p>{this.props.product.price}</p>
-                <p>{this.props.product.sale_price}</p>
-                <p>{this.props.product.sale_text}</p>
+                <div className={this.state.showAttributes ? '' : 'hidden'}>
+                    <p>Sold out: {this.props.product.sold_out ? 'yes': 'no'}</p>
+                    <p>Category: {this.props.product.category}</p>
+                    <p>Under sale: {this.props.product.under_sale? 'yes' : 'no'}</p>
+                    <p>Price: {this.props.product.price}</p>
+                    <p>Sale price: {this.props.product.sale_price}</p>
+                    <p>{this.props.product.sale_text}</p>
+                </div>
                 <button onClick={this.props.handleDelete}>Delete</button>
                 <button onClick={this.handleEdit}>{ this.state.editable ? 'Submit' : 'Edit' }</button>
             </div>
