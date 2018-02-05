@@ -42,7 +42,6 @@ group :development, :test do
 
   gem 'faker'
   gem 'factory_bot_rails'
-  gem 'factory_bot'
   gem 'rspec-rails'
 end
 

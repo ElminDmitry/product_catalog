@@ -20,8 +20,4 @@ class Api::V1::ProductsController < Api::V1::BaseController
   def page
     params[:page] || 1
   end
-
-  def product_params
-    params.require(:product).permit(:id, :name, :sold_out, :category, :under_sale, :price, :sale_price, :sale_text)
-  end
 end
