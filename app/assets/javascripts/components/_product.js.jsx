@@ -24,13 +24,34 @@ class Product extends React.Component {
     }
 
     render() {
-        let name;
+        let name, price, sale_price, sale_text;
         if(this.state.editable) {
             name = <input type='text'
                           ref={(name) => { this.nameInput = name; }}
                           defaultValue={this.props.product.name}/>
         } else {
             name = <h3 onClick={this.handleNameClick}>{this.props.product.name}</h3>;
+        }
+        if(this.state.editable) {
+            price = <input type='number'
+                          ref={(name) => { this.nameInput = name; }}
+                          defaultValue={this.props.product.name}/>
+        } else {
+            price = <h3 onClick={this.handleNameClick}>{this.props.product.name}</h3>;
+        }
+        if(this.state.editable) {
+            sale_price = <input type='number'
+                          ref={(name) => { this.nameInput = name; }}
+                          defaultValue={this.props.product.name}/>
+        } else {
+            sale_price = <h3 onClick={this.handleNameClick}>{this.props.product.name}</h3>;
+        }
+        if(this.state.editable) {
+            sale_text = <input type='text'
+                          ref={(name) => { this.nameInput = name; }}
+                          defaultValue={this.props.product.name}/>
+        } else {
+            sale_text = <h3 onClick={this.handleNameClick}>{this.props.product.name}</h3>;
         }
         return (
             <div>

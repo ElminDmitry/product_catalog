@@ -1,4 +1,4 @@
-class Body extends React.Component {
+class ProductsCatalogApp extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -18,7 +18,6 @@ class Body extends React.Component {
         this.getDataFromApi = this.getDataFromApi.bind(this);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.handleSortColumn = this.handleSortColumn.bind(this);
     }
 
     componentDidMount() {
@@ -98,23 +97,6 @@ class Body extends React.Component {
         })
     }
 
-    handleSortColumn(name, order) {
-        if (this.state.sort !== name) {
-            order = 'asc';
-        }
-        $.ajax({
-            url: '/api/v1/products',
-            data: { sort_by: name, order: order, page: this.state.page },
-            method: 'GET',
-            success: function(data) {
-                this.setState({ events: data.events, sort: name, order: order });
-            }.bind(this),
-            error: function(xhr, status, error) {
-                alert('Cannot sort events: ', error);
-            }
-        });
-    }
-
     updateItems(newProduct) {
         let products = this.state.products;
         products = products.map((product) => {
@@ -128,7 +110,6 @@ class Body extends React.Component {
             <div>
                 <FilterForm categories={this.state.categories}
                             handleSearch={this.handleSearch}/>
-                <NewProduct handleSubmit={this.handleSubmit}/>
                 <AllProducts products={this.state.products}
                              handleDelete={this.handleDelete}
                              onUpdate={this.handleUpdate}/>

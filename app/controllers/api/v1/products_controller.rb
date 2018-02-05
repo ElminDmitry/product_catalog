@@ -7,28 +7,6 @@ class Api::V1::ProductsController < Api::V1::BaseController
                  categories: Product.categories
   end
 
-  def create
-    respond_with :api, :v1, Product.create(product_params)
-  end
-
-  def destroy
-    respond_with Product.destroy(params[:id])
-  end
-
-  def update
-    product = Product.find(params['id'])
-    product.update_attributes(product_params)
-    respond_with product, json: product
-  end
-
-  def search
-    products = Product.ransack(params[:q]).result.order(sort_by + ' ' + order)
-    respond_with products: products,
-                 page: page,
-                 pages: products.pages,
-                 categories: Product.categories
-  end
-
   private
 
   def sort_by
